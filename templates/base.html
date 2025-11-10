@@ -1,39 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>{% block title %}Personal Task Manager | Python Web App{% endblock %}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <meta charset="UTF-8" />
+  <title>{% block title %}Personal Task Manager{% endblock %}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-
 <body>
 
-<header>
-    <!-- Navigation Bar -->
+  <header role="banner">
     <div class="navbar">
-        <div class="navbar-logo">
-            <a href="{{ url_for('index') }}">
-                <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="logo">
-            </a>
-        </div>
-
-        <ul class="navbar-links">
-            <li><a href="{{ url_for('index') }}" class="{% if request.path == url_for('index') %}active{% endif %}">Home</a></li>
-            <li><a href="{{ url_for('add_task') }}" class="{% if request.path == url_for('add_task') %}active{% endif %}">Add Task</a></li>
-            <li><a href="#">Completed Tasks</a></li>
-            <li><a href="#">Profile</a></li>
-        </ul>
+      <div class="navbar-logo">
+        <a href="{{ url_for('index') }}">
+          <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="logo">
+        </a>
+      </div>
+      <ul class="navbar-links" role="navigation">
+        <li><a href="{{ url_for('index') }}" class="{% if request.path == url_for('index') %}active{% endif %}">Home</a></li>
+        <li><a href="{{ url_for('add_task') }}" class="{% if request.path == url_for('add_task') %}active{% endif %}">Add Task</a></li>
+        <li><a href="#">Completed Tasks</a></li>
+        <li><a href="#">Profile</a></li>
+      </ul>
     </div>
-</header>
+  </header>
 
-<!-- Main Content -->
-<main class="container">
+  <main role="main">
     {% block content %}{% endblock %}
-</main>
+  </main>
 
-<footer>
+  <footer role="contentinfo">
     <p>© 2025. Built by Muhammad Ismani Helmi LAS012125</p>
-</footer>
+  </footer>
 
 </body>
 </html>
