@@ -8,29 +8,66 @@
 </head>
 <body>
 
-  <header role="banner">
-    <div class="navbar">
-      <div class="navbar-logo">
-        <a href="{{ url_for('index') }}">
-          <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="logo">
-        </a>
-      </div>
-      <ul class="navbar-links" role="navigation">
-        <li><a href="{{ url_for('index') }}" class="{% if request.path == url_for('index') %}active{% endif %}">Home</a></li>
-        <li><a href="{{ url_for('add_task') }}" class="{% if request.path == url_for('add_task') %}active{% endif %}">Add Task</a></li>
-        <li><a href="#">Completed Tasks</a></li>
-        <li><a href="#">Profile</a></li>
-      </ul>
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="brand">
+      <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" onerror="this.style.display='none'">
     </div>
-  </header>
+    <ul class="nav-links">
+      <li><a href="{{ url_for('index') }}" class="{% if request.path == url_for('index') %}active{% endif %}">Home</a></li>
+      <li><a href="{{ url_for('add_task') }}" class="{% if request.path == url_for('add_task') %}active{% endif %}">Add Task</a></li>
+      <li><a href="{{ url_for('completed_tasks') }}" class="{% if request.path == url_for('completed_tasks') %}active{% endif %}">Completed Tasks</a></li>
+      <li><a href="{{ url_for('profile') }}" class="{% if request.path == url_for('profile') %}active{% endif %}">Profile</a></li>
+    </ul>
+  </nav>
 
-  <main role="main">
+  <!-- PAGE CONTENT -->
+  <main class="content">
     {% block content %}{% endblock %}
   </main>
 
-  <footer role="contentinfo">
-    <p>© 2025. Built by Muhammad Ismani Helmi LAS012125</p>
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2025. Built by Muhammad Ismani Helmi LAS012125.</p>
   </footer>
+
+  <script>
+document.addEventListener('click', async (e) => {
+  const btn = e.target.closest('.btn-delete');
+  if (!btn) return;
+
+  // We’ll handle the delete via AJAX
+  e.preventDefault();
+
+  // Show a simple confirmation
+  const confirmed = window.confirm('Delete this task? This cannot be undone.');
+  if (!confirmed) return;
+
+  const id  = btn.dataset.id;
+  const row = btn.closest('tr');
+
+  if (!id || !row) return;
+
+  try {
+    const res = await fetch(`/api/tasks/${id}`, { method: 'DELETE' });
+    const data = await res.json();
+
+    if (data && data.ok) {
+      // Smoothly remove the row without reloading
+      row.style.transition = 'opacity 200ms ease, transform 200ms ease';
+      row.style.opacity = '0';
+      row.style.transform = 'scale(0.99)';
+      setTimeout(() => row.remove(), 220);
+    } else {
+      alert('Could not delete the task. It may have already been removed.');
+      // optional fallback: window.location.href = btn.getAttribute('href');
+    }
+  } catch (err) {
+    alert('Network error while deleting.');
+    // optional fallback: window.location.href = btn.getAttribute('href');
+  }
+});
+</script>
 
 </body>
 </html>

@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Profile | Personal Task Manager{% endblock %}
+
+{% block content %}
+<div class="card glass profile-card">
+  <div class="profile-header">
+    <img src="{{ url_for('static', filename=p.avatar) }}" alt="{{ p.name }}" class="profile-photo">
+    <div>
+      <h2>{{ p.name }}</h2>
+      <p class="muted">Certified AWS, Azure, ITIL and SCRUM Master | Senior DevOps Engineer | Singapore</p>
+    </div>
+  </div>
+
+  <div class="profile-grid">
+    <section>
+      <h3>Certifications</h3>
+      <ul>{% for c in p.certs %}<li>{{ c }}</li>{% endfor %}</ul>
+    </section>
+
+    <section>
+      <h3>Skills</h3>
+      <ul>{% for s in p.skills %}<li>{{ s }}</li>{% endfor %}</ul>
+    </section>
+
+    <section class="full">
+      <h3>Achievements</h3>
+      <ul>{% for a in p.achievements %}<li>{{ a }}</li>{% endfor %}</ul>
+    </section>
+  </div>
+</div>
+{% endblock %}

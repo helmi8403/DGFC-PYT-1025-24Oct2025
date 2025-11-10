@@ -1,26 +1,35 @@
 {% extends "base.html" %}
+{% block title %}Add New Task | Personal Task Manager{% endblock %}
+
 {% block content %}
-<h2>Add New Task</h2>
+<div class="card glass">
+  <div class="header-row">
+    <h2>Add New Task</h2>
+  </div>
 
-<form method="POST">
-    <label>Task Title:</label>
-    <input type="text" name="title" required>
+  <form method="POST" class="form">
+    <label>Task Title:
+      <input type="text" name="title" placeholder="e.g., Prepare Final Presentation" required>
+    </label>
 
-    <label>Description:</label>
-    <textarea name="description" required></textarea>
+    <label>Description:
+      <textarea name="description" rows="6" placeholder="Optional details…"></textarea>
+    </label>
 
-    <label>Priority:</label>
-    <select name="priority" required>
-        <option value="">Select Priority</option>
+    <label>Priority:
+      <select name="priority" required>
+        <option value="" selected disabled>Select Priority</option>
         <option value="High">High</option>
         <option value="Medium">Medium</option>
         <option value="Low">Low</option>
-    </select>
+      </select>
+    </label>
 
-    <label>Deadline:</label>
-    <input type="date" name="deadline" required>
+    <label>Deadline:
+      <input type="date" name="deadline" required>
+    </label>
 
-    <input type="submit" value="Add Task">
-</form>
-
+    <button type="submit" class="btn btn-add">Add Task</button>
+  </form>
+</div>
 {% endblock %}

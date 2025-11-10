@@ -1,26 +1,41 @@
 {% extends "base.html" %}
+{% block title %}Edit Task | Personal Task Manager{% endblock %}
+
 {% block content %}
+<div class="card glass form-card">
+  <h2>Edit Task</h2>
+  <form method="POST" action="{{ url_for('edit_task', task_id=task.id) }}">
+    
+    <div class="form-group">
+      <label for="title">Task Title:</label>
+      <input type="text" id="title" name="title" value="{{ task.title }}" required>
+    </div>
 
-<h2>Edit Task</h2>
+    <div class="form-group">
+      <label for="description">Description:</label>
+      <textarea id="description" name="description" rows="3">{{ task.description }}</textarea>
+    </div>
 
-<form method="POST">
-    <label>Task Title:</label>
-    <input type="text" name="title" value="{{ task.title }}" required>
+    <div class="form-group-inline">
+      <div>
+        <label for="priority">Priority:</label>
+        <select id="priority" name="priority" required>
+          <option value="High" {% if task.priority == 'High' %}selected{% endif %}>High</option>
+          <option value="Medium" {% if task.priority == 'Medium' %}selected{% endif %}>Medium</option>
+          <option value="Low" {% if task.priority == 'Low' %}selected{% endif %}>Low</option>
+        </select>
+      </div>
 
-    <label>Description:</label>
-    <textarea name="description" required>{{ task.description }}</textarea>
+      <div>
+        <label for="deadline">Deadline:</label>
+        <input type="date" id="deadline" name="deadline" value="{{ task.deadline.strftime('%Y-%m-%d') }}" required>
+      </div>
+    </div>
 
-    <label>Priority:</label>
-    <select name="priority" required>
-        <option value="High" {% if task.priority == 'High' %}selected{% endif %}>High</option>
-        <option value="Medium" {% if task.priority == 'Medium' %}selected{% endif %}>Medium</option>
-        <option value="Low" {% if task.priority == 'Low' %}selected{% endif %}>Low</option>
-    </select>
-
-    <label>Deadline:</label>
-    <input type="date" name="deadline" value="{{ task.deadline }}" required>
-
-    <input type="submit" value="Update Task">
-</form>
-
+    <div class="form-actions">
+      <button type="submit" class="btn btn-blue">💾 Save Changes</button>
+      <a href="{{ url_for('index') }}" class="btn btn-red">Cancel</a>
+    </div>
+  </form>
+</div>
 {% endblock %}

@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Completed Tasks | Personal Task Manager{% endblock %}
+
+{% block content %}
+<div class="card glass">
+  <div class="header-row">
+    <h2>Completed Tasks</h2>
+  </div>
+
+  {% if tasks and tasks|length > 0 %}
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Task</th>
+        <th>Priority</th>
+        <th>Deadline</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for task in tasks %}
+      <tr class="row-accent {{ task.priority|lower }}">
+        <td class="title">{{ task.title }}</td>
+        <td><span class="priority-pill {{ task.priority|lower }}">{{ task.priority }}</span></td>
+        <td>{{ task.deadline.strftime('%Y-%m-%d') }}</td>
+        <td class="actions">
+          <a href="{{ url_for('delete_task', task_id=task.id) }}" class="btn btn-red">Delete</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p class="muted">No completed tasks yet.</p>
+  {% endif %}
+</div>
+{% endblock %}
