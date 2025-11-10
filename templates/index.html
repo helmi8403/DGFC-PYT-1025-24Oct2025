@@ -1,62 +1,83 @@
 {% extends "base.html" %}
+{% block title %}Personal Task Manager — Tasks{% endblock %}
+
 {% block content %}
+<h1 class="mt-0">Your Tasks</h1>
 
-<h2>Task List</h2>
+<div class="form-actions mt-2">
+  <a class="button" href="{{ url_for('add_task') }}">+ Add Task</a>
+</div>
 
+<table class="table task-table mt-2">
+  <thead>
+    <tr>
+      <th style="width:42%;">Task</th>
+      <th style="width:18%;">Due Date</th>
+      <th style="width:20%;">Days Remaining</th>
+      <th style="width:20%;">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for task in tasks %}
+      {# Determine row status class from task.days_left #}
+      {% set d = task.days_left %}
+      {% if d is not none and d < 0 %}
+        {% set status_class = "task--overdue" %}
+      {% elif d == 0 %}
+        {% set status_class = "task--due-today" %}
+      {% elif d is not none and d <= 3 %}
+        {% set status_class = "task--due-soon" %}
+      {% elif d is not none and d <= 7 %}
+        {% set status_class = "task--upcoming" %}
+      {% else %}
+        {% set status_class = "task--later" %}
+      {% endif %}
 
+      <tr class="task-row {{ status_class }}">
+        <td class="task-title">
+          <div class="task-title-line">
+            <strong>{{ task.title }}</strong>
+            {% if task.priority %}
+              <span class="priority-badge priority-{{ task.priority|lower }}">
+                {{ task.priority|capitalize }}
+              </span>
+            {% endif %}
+          </div>
 
-{% if tasks %}
-<table>
-    <thead>
-        <tr>
-            <th>Title</th>
-            <th>Description</th>
-            <th>Priority</th>
-            <th>Deadline</th>
-            <th>Days Remaining</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for task in tasks %}
-        <tr>
-            <td data-label="Title">{{ task.title }}</td>
-            <td data-label="Description">{{ task.description }}</td>
-            <td data-label="Priority" data-priority="{{ task.priority }}">{{ task.priority }}</td>
-<td data-label="Deadline">{{ task.deadline }}</td>
-<td data-label="Days Remaining">
-    {% set days_remaining = (task.deadline - current_date).days %}
+          {% if task.description %}
+            <div class="task-note">{{ task.description }}</div>
+          {% endif %}
+        </td>
 
-    {% if days_remaining < 1 %}
-        <span style="color: red; font-weight: bold;">
-            Urgent! ({{ days_remaining }} day{{ '' if days_remaining == 1 else 's' }} left)
-        </span>
+        <td class="due-date">
+          {% if task.deadline %}
+            {{ task.deadline.strftime('%Y-%m-%d') }}
+          {% else %}
+            —
+          {% endif %}
+        </td>
 
-    {% elif days_remaining <= 3 %}
-        <span style="color: orange; font-weight: bold;">
-            Soon ({{ days_remaining }} days left)
-        </span>
+        <td class="days-remaining">
+          {% if d is none %}
+            —
+          {% elif d < 0 %}
+            <span class="badge badge--due">Overdue {{ (d * -1) }}d</span>
+          {% elif d == 0 %}
+            <span class="badge badge--due">Due today</span>
+          {% else %}
+            {{ d }} day{{ '' if d == 1 else 's' }}
+          {% endif %}
+        </td>
 
+        <td class="actions">
+          <a class="button button--secondary" href="{{ url_for('edit_task', task_id=task.id) }}">Edit</a>
+          <a class="button button--secondary" href="{{ url_for('delete_task', task_id=task.id) }}"
+             onclick="return confirm('Delete this task?');">Delete</a>
+        </td>
+      </tr>
     {% else %}
-        <span style="color: green; font-weight: bold;">
-            On Track ({{ days_remaining }} days left)
-        </span>
-    {% endif %}
-</td>
-            <td data-label="Actions">
-                <a href="{{ url_for('edit_task', task_id=task.id) }}">Edit</a> |
-                <a href="{{ url_for('delete_task', task_id=task.id) }}" onclick="return confirm('Delete task?')">Delete</a>
-
-
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
+      <tr><td colspan="4" style="text-align:center;">No tasks yet. Click “Add Task”.</td></tr>
+    {% endfor %}
+  </tbody>
 </table>
-{% else %}
-<p>No tasks yet! Click "Add New Task".</p>
-{% endif %}
-
-
-
 {% endblock %}
