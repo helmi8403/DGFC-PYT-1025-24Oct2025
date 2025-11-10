@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Task List</h2>
+
+
+
+{% if tasks %}
+<table>
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Priority</th>
+            <th>Deadline</th>
+            <th>Days Remaining</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for task in tasks %}
+        <tr>
+            <td data-label="Title">{{ task.title }}</td>
+            <td data-label="Description">{{ task.description }}</td>
+            <td data-label="Priority" data-priority="{{ task.priority }}">{{ task.priority }}</td>
+<td data-label="Deadline">{{ task.deadline }}</td>
+<td data-label="Days Remaining">
+    {% set days_remaining = (task.deadline - current_date).days %}
+
+    {% if days_remaining < 1 %}
+        <span style="color: red; font-weight: bold;">
+            Urgent! ({{ days_remaining }} day{{ '' if days_remaining == 1 else 's' }} left)
+        </span>
+
+    {% elif days_remaining <= 3 %}
+        <span style="color: orange; font-weight: bold;">
+            Soon ({{ days_remaining }} days left)
+        </span>
+
+    {% else %}
+        <span style="color: green; font-weight: bold;">
+            On Track ({{ days_remaining }} days left)
+        </span>
+    {% endif %}
+</td>
+            <td data-label="Actions">
+                <a href="{{ url_for('edit_task', task_id=task.id) }}">Edit</a> |
+                <a href="{{ url_for('delete_task', task_id=task.id) }}" onclick="return confirm('Delete task?')">Delete</a>
+
+
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No tasks yet! Click "Add New Task".</p>
+{% endif %}
+
+
+
+{% endblock %}

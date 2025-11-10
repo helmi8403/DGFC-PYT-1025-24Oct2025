@@ -1,0 +1,230 @@
+/* ==============================================
+   GLOBAL LAYOUT
+   ============================================== */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    font-family: Arial, sans-serif;
+    background: url('../static/bg.jpg') no-repeat center center fixed;
+    background-size: cover;
+}
+
+main {
+    flex: 1;
+    width: 80%;
+    max-width: 1000px;
+    margin: 25px auto;
+    background-color: rgba(255, 255, 255, 0.90);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* ==============================================
+   HEADER + NAVIGATION
+   ============================================== */
+header {
+    background-color: #ffffff;
+    width: 100%;
+    padding: 12px 0;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Flex container */
+.navbar {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Logo */
+.navbar-logo .logo {
+    height: 45px;
+}
+
+/* Navigation links */
+.navbar-links {
+    list-style: none;
+    display: flex;
+    gap: 25px;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar-links li a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+    font-size: 16px;
+    transition: color 0.3s, opacity 0.3s;
+}
+
+.navbar-links li a:hover {
+    color: #CC3366;
+}
+
+.navbar-links li a.active {
+    color: #CC3366;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+/* ==============================================
+   FOOTER FIX (Always Bottom)
+   ============================================== */
+footer {
+    width: 100%;
+    text-align: center;
+    padding: 15px 0;
+    background-color: #CC3366;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    font-size: 14px;
+    color: #ffffff;
+    box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.15); /* Top shadow */
+}
+
+/* ==============================================
+   FORMS (Add Task / Edit Task)
+   ============================================== */
+form {
+    width: 80%;
+    max-width: 600px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    font-weight: bold;
+    margin: 10px 0 5px;
+}
+
+input, select, textarea {
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 15px;
+    margin-bottom: 18px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+input[type="submit"] {
+    background-color: #CC3366;
+    color: white;
+    border: none;
+    cursor: pointer;
+    width: 50%;
+    align-self: center;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+input[type="submit"]:hover {
+    background-color: #b02c59;
+}
+
+/* ==============================================
+   TABLE (Task List)
+   ============================================== */
+table {
+    width: 80%;
+    margin: 30px auto; 
+    border-collapse: collapse;
+    background: #ffffff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15); /* Soft shadow */
+}
+
+/* Table header style */
+th {
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px;
+    text-align: left;
+    font-size: 16px;
+}
+
+/* Table rows */
+td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+    font-size: 15px;
+}
+
+/* Hover effect */
+tr:hover {
+    background-color: #f5f5f5;
+}
+
+/* Action buttons */
+.actions button {
+    padding: 6px 12px;
+    margin-right: 8px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.actions .edit-btn {
+    background-color: #ffa500;
+    color: white;
+}
+
+.actions .delete-btn {
+    background-color: #ff4d4d;
+    color: white;
+}
+
+.actions button:hover {
+    opacity: 0.8;
+}
+
+/* ==============================================
+   RESPONSIVE
+   ============================================== */
+@media screen and (max-width: 768px) {
+    main {
+        width: 90%;
+        padding: 18px;
+    }
+
+    input[type="submit"] {
+        width: 100%;
+    }
+
+    table, thead, tbody, th, td, tr {
+        display: block;
+    }
+
+    th {
+        display: none;
+    }
+
+    td {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px;
+        border: 1px solid #ddd;
+    }
+
+    td::before {
+        font-weight: bold;
+        content: attr(data-label);
+    }
+}
